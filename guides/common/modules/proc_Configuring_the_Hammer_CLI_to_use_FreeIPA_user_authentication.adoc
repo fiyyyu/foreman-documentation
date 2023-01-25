@@ -1,0 +1,33 @@
+[id="Configuring_the_Hammer_CLI_to_Use_FreeIPA_User_Authentication_{context}"]
+= Configuring the Hammer CLI to Use {FreeIPA} User Authentication
+
+This section describes how to configure the {Project} Hammer command-line interface (CLI) tool to use Red{nbsp}Hat Identity{nbsp}Management (IdM) to authenticate users.
+
+.Prerequisites
+* You have enrolled your {ProjectServer} into IdM and configured it to use IdM for authentication.
+For more information, see {InstallingServerDocURL}Using_FreeIPA_{project-context}[Using {FreeIPA}] in _{InstallingServerDocTitle}_.
+//* An IdM server is running and reachable.
+* If you are using Standalone Hammer, you have configured Kerberos authentication for the host.
+//For more information, see ????
+
+.Procedure
+. Enable sessions in the `~/.hammer/cli.modules.d/foreman.yml` Hammer configuration file by adding the `:use_sessions: true` line to the `foreman` parameters:
++
+[options="nowrap", subs="+quotes,verbatim,attributes"]
+----
+:foreman:
+  :use_sessions: true
+----
++
+Adding the line enforces session usage in Hammer. This means that Hammer performs the authentication request only once instead of with each `hammer` command.
+
+. [Optional] Enable negotiate authentication in the `~/.hammer/cli.modules.d/foreman.yml` Hammer configuration file by adding the `:default_auth_type: ‘Negotiate_Auth’` line to the `foreman` parameters:
++
+[options="nowrap", subs="+quotes,verbatim,attributes"]
+----
+:foreman:
+  :default_auth_type: 'Negotiate_Auth'
+  :use_sessions: true
+----
++
+Adding this line means that your authentication is negotiated when you enter the first `hammer` command. If this entry is present, Hammer tries to communicate with the server by using the negotiation protocol.
